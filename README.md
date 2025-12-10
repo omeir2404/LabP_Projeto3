@@ -60,3 +60,37 @@ Note: File names above correspond to the top-level `.java` files in the reposito
 If you want, I can:
 - add a simple `run.sh` that compiles and runs the project, or
 - add a `pom.xml` or `build.gradle` and a basic JUnit test to demonstrate CI readiness.
+
+**Quickstart (recommended)**
+
+To make building and running easier there's a helper script included: `run.sh`.
+
+Compile only the playable implementation files and the `Filling` enum (do not compile the stubbed sources under `src/types` that would conflict):
+
+```bash
+./run.sh        # compiles into the `out` directory
+./run.sh run    # compiles and then launches the interactive game
+```
+
+If you prefer to compile and run manually:
+
+```bash
+mkdir -p out
+javac -d out Main.java Game.java Table.java Bottle.java src/types/Filling.java
+java -cp out types.Main
+```
+
+Notes & troubleshooting
+- The repository contains two sets of sources for package `types`: full implementations at the project root (used by the playable game) and stub/test files under `src/types` (used by tests). Compiling both sets together will create duplicate-class errors — use the explicit file list above or `run.sh` which compiles only the correct files.
+- The game is interactive and uses console input. Follow on-screen prompts to choose actions and enter bottle indices (1-based).
+
+**Example session (short)**
+- Start the game: `./run.sh run`.
+- At the prompt `play(1),help(2),leave(0)`, enter `1` to play.
+- When asked for bottle indices, enter integers like `1` and `2` (indices are 1-based).
+
+**Next steps I can do for you**
+- Add a `pom.xml` or `build.gradle` to formalize the build and add unit-test execution.
+- Move the playable sources into `src/types` and remove the stubs, to make the layout consistent.
+- Add a small CI configuration (GitHub Actions) that runs `./run.sh` and optional tests.
+
